@@ -1,0 +1,39 @@
+<div class="register-page">
+  <h2>Реєстрація нового користувача</h2>
+  <a routerLink="/login">Вже зареєстровані? Увійти</a>
+  <form [formGroup]="regForm">
+    <div>
+      <div class="justify-content-center">
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Ім'я</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Прізвище</mat-label>
+            <input matInput formControlName="surname">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Логін</mat-label>
+            <input matInput formControlName="username">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Пароль</mat-label>
+            <input matInput type="password" formControlName="password">
+          </mat-form-field>
+        </div>
+      </div>
+      <div id="controls" class="row">
+        <button [disabled]="regForm.invalid" (click)="submit()" mat-flat-button color="primary">
+          Реєстрація
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

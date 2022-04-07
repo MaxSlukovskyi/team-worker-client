@@ -1,0 +1,24 @@
+.register-page {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  padding: 10px;
+  margin: auto;
+  width: 100%;
+}
+
+#controls {
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.mat-flat-button {
+  font-size: 18px;
+  padding: 5px 20px 5px 20px;
+}
+
+.mat-form-field {
+  width: 30%;
+}
