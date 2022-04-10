@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Додати працівника на проект</h1>
+<form [formGroup]="userForm">
+  <div mat-dialog-content>
+    <div class="justify-content-center">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Працівник</mat-label>
+          <mat-select  formControlName="user">
+            <mat-option req *ngFor="let user of users" [value]="user">{{user.name}} {{user.surname}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Проект</mat-label>
+          <mat-select formControlName="project">
+            <mat-option  *ngFor="let project of projects" [value]="project" (onSelectionChange)="setUpPositions(project, $event)" >{{project.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Посада на проекті</mat-label>
+          <mat-select formControlName="position">
+            <mat-option *ngFor="let position of positions" [value]="position">{{position.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</form>
+<div mat-dialog-action [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Закрити</button>
+  <button style="margin-left: 10px" [disabled]="userForm.invalid" mat-raised-button color="primary" (click)="updateUser()">Додати</button>
+</div>

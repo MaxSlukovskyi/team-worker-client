@@ -4,11 +4,7 @@ import {TokenStorageService} from "../../services/token-storage.service";
 import {NotificationService} from "../../services/notification.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validator, Validators} from "@angular/forms";
-import {formatDate} from "@angular/common";
 import {UserService} from "../../services/user.service";
-import {User} from "../../models/User";
-import {Role} from "../../models/Role";
-import {window} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -29,9 +25,9 @@ export class LoginComponent implements OnInit {
   ) {
     if(this.tokenStorage.getUser()) {
       if(this.tokenStorage.getRole() === 'ROLE_ADMIN') {
-        this.router.navigate(['main']);
+        this.router.navigate(['admin/main']);
       } else {
-        this.router.navigate(['main-user']);
+        this.router.navigate(['user/main']);
       }
     }
   }
@@ -56,7 +52,6 @@ export class LoginComponent implements OnInit {
         next: (res) => {
           this.tokenStorage.saveUser(res);
           this.notificationService.showSnackBar('Вітаємо, ' + this.tokenStorage.getUser().name);
-
 
           for(var i = 0; i < this.tokenStorage.getUser().roles.length; i++) {
             if(this.tokenStorage.getUser().roles[i].name === 'ROLE_ADMIN') {

@@ -22,6 +22,12 @@ import { EditProjectComponent } from './admin/projects/edit-project/edit-project
 import { AddUserToProjectComponent } from './admin/users/add-user-to-project/add-user-to-project.component';
 import { AddPositionToProjectComponent } from './admin/projects/add-position-to-project/add-position-to-project.component';
 import { DeletePositionFromProjectComponent } from './admin/projects/delete-position-from-project/delete-position-from-project.component';
+import { MoreInfoTaskComponent } from './admin/tasks/more-info-task/more-info-task.component';
+import { AddTaskComponent } from './admin/tasks/add-task/add-task.component';
+import { UserHeaderComponent } from './main-user/user-header/user-header.component';
+import { UserTasksComponent } from './main-user/user-tasks/user-tasks.component';
+import { MoreUserTaskComponent } from './main-user/user-tasks/more-user-task/more-user-task.component';
+import { StatisticsComponent } from './admin/statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +44,13 @@ import { DeletePositionFromProjectComponent } from './admin/projects/delete-posi
     EditProjectComponent,
     AddUserToProjectComponent,
     AddPositionToProjectComponent,
-    DeletePositionFromProjectComponent
+    DeletePositionFromProjectComponent,
+    MoreInfoTaskComponent,
+    AddTaskComponent,
+    UserHeaderComponent,
+    UserTasksComponent,
+    MoreUserTaskComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,
