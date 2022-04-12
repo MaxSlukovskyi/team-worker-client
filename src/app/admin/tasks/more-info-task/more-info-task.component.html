@@ -1,0 +1,88 @@
+<h1 mat-dialog-title>Деталі про завдання</h1>
+<form [formGroup]="taskForm">
+  <div mat-dialog-content>
+    <div class="justify-content-center">
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Назва завдання</mat-label>
+          <input readonly matInput formControlName="name">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Проект</mat-label>
+          <input readonly matInput formControlName="project">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Виконавець завдання</mat-label>
+          <input readonly matInput formControlName="assignee">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Автор завдання</mat-label>
+          <input readonly matInput formControlName="creator">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Пріорітет</mat-label>
+          <input readonly matInput formControlName="priority">
+        </mat-form-field>
+      </div>
+      <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Стадія виконання</mat-label>
+        <input readonly matInput formControlName="stage">
+      </mat-form-field>
+      </div>
+      <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Тип завдання</mat-label>
+        <input readonly matInput formControlName="type">
+      </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Час створення</mat-label>
+          <input readonly matInput formControlName="createTime">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Дедлайн</mat-label>
+          <input readonly matInput formControlName="dueTime">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Остання зміна</mat-label>
+          <input readonly matInput formControlName="lastEditTime">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Час початку роботи</mat-label>
+          <input readonly matInput formControlName="startTime">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Час закінчення виконання</mat-label>
+          <input readonly matInput formControlName="endTime">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Опис</mat-label>
+          <textarea matInput readonly formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</form>
+<div mat-dialog-action [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Закрити</button>
+</div>

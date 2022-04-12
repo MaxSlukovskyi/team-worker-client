@@ -1,0 +1,241 @@
+<app-admin-header></app-admin-header>
+<div class="container">
+    <form style="margin-top: 25px" [formGroup]="taskForm">
+        <mat-form-field style="margin-right: 20px" appearance="outline">
+          <mat-label>Проект</mat-label>
+          <mat-select formControlName="project">
+            <mat-option  *ngFor="let project of projects" (onSelectionChange)="setUpPositions(project, $event)" [value]="project" >{{project.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field style="margin-right: 20px" appearance="outline">
+          <mat-label>Посада на проекті</mat-label>
+          <mat-select formControlName="position">
+            <mat-option *ngFor="let position of positions" (onSelectionChange)="setUpUser(position, $event)" [value]="position">{{position.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      <mat-form-field style="margin-right: 20px" appearance="outline">
+        <mat-label>Виконавець</mat-label>
+        <mat-select formControlName="user">
+          <mat-option *ngFor="let user of users" [value]="user">{{user.name}} {{user.surname}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+       <mat-form-field style="width: 369px; margin-right: 20px;" appearance="outline">
+         <mat-label>Оберіть діапазон (по даті створення завдання)</mat-label>
+         <mat-date-range-input [rangePicker]="picker">
+           <input formControlName="startTime" matStartDate placeholder="Початкова дата">
+           <input formControlName="endTime" matEndDate placeholder="Кінцева дата">
+         </mat-date-range-input>
+         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+         <mat-date-range-picker #picker></mat-date-range-picker>
+       </mat-form-field>
+      <mat-dialog-actions>
+        <button mat-flat-button color="primary" style="width: auto; height: 60px;" (click)="getTasksByFilters()">Показати завдання</button>
+      </mat-dialog-actions>
+    </form>
+
+  <h1 class="mt-5">Працівник {{taskForm.value.user.name}}  {{taskForm.value.user.surname}}</h1>
+
+  <div style="display: flex; flex-direction: row; justify-content: space-between">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Пошук</mat-label>
+      <input matInput (keyup)="applyFilter($event)" #input>
+    </mat-form-field>
+
+
+    <div style="width: 150px">
+      <button mat-icon-button color="primary" (click)="downloadAsPDF()">
+        Завантажити звіт
+        <mat-icon>download</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <div class="mat-sort-header-container">
+        <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> ID </th>
+      </div>
+      <td mat-cell hidden *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Назва завдання </th>
+      <td mat-cell class="name-task" *matCellDef="let row"> {{row.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Опис </th>
+      <td mat-cell hidden *matCellDef="let row"> {{row.description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="createTime">
+      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата створення </th>
+      <td mat-cell hidden *matCellDef="let row"> {{row.createTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dueTime">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Дедлайн </th>
+      <td mat-cell *matCellDef="let row">
+        <div *ngIf="row.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
+          {{row.dueTime}}
+        </div>
+        <div *ngIf="!row.overdue" style="background: white">
+          {{row.dueTime}}
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="startTime">
+      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата початку виконання </th>
+      <td mat-cell hidden *matCellDef="let row"> {{row.startTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endTime">
+      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата закінчення </th>
+      <td mat-cell hidden *matCellDef="let row"> {{row.endTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="assignee">
+      <th mat-header-cell *matHeaderCellDef> Виконавець </th>
+      <td mat-cell *matCellDef="let row"> {{row.assignee.name}} {{row.assignee.surname}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="creator">
+      <th mat-header-cell *matHeaderCellDef> Автор </th>
+      <td mat-cell *matCellDef="let row"> {{row.creator.name}} {{row.creator.surname}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastEditTime">
+      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата редагування </th>
+      <td mat-cell hidden *matCellDef="let row"> {{row.lastEditTime}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="project">
+      <th mat-header-cell *matHeaderCellDef> Проект </th>
+      <td mat-cell id="name-project" *matCellDef="let row"> {{row.project.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="priority">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Пріорітет </th>
+      <td mat-cell *matCellDef="let row"> {{row.priority}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="stage">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Стадія </th>
+
+      <td mat-cell *matCellDef="let row" >
+        {{row.stage}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Тип завдання </th>
+      <td mat-cell *matCellDef="let row"> {{row.type}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button (click)="moreAboutTask(row)" color="primary">
+          <mat-icon>more</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">Не знайдено завдань</td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100, 1000]" aria-label="Select page of users"></mat-paginator>
+
+  <div id="pdfTable" #pdfTable>
+    <div hidden style="font-size: 14px">
+      <h5 style="text-align: center;">Працівник {{taskForm.value.user.name}}  {{taskForm.value.user.surname}}</h5>
+      <table style="text-align: center;font-size: 10px" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Назва завдання </th>
+          <td mat-cell class="name-task" *matCellDef="let row"> {{row.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Опис </th>
+          <td mat-cell hidden *matCellDef="let row"> {{row.description}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createTime">
+          <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата створення </th>
+          <td mat-cell hidden *matCellDef="let row"> {{row.createTime}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dueTime">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Дедлайн </th>
+          <td mat-cell *matCellDef="let row">
+            <div *ngIf="row.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
+              {{row.dueTime}}
+            </div>
+            <div *ngIf="!row.overdue" style="background: white">
+              {{row.dueTime}}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="startTime">
+          <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата початку виконання </th>
+          <td mat-cell hidden *matCellDef="let row"> {{row.startTime}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="endTime">
+          <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата закінчення </th>
+          <td mat-cell hidden *matCellDef="let row"> {{row.endTime}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="assignee">
+          <th mat-header-cell *matHeaderCellDef> Виконавець </th>
+          <td mat-cell *matCellDef="let row"> {{row.assignee.name}} {{row.assignee.surname}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="creator">
+          <th mat-header-cell *matHeaderCellDef> Автор </th>
+          <td mat-cell *matCellDef="let row"> {{row.creator.name}} {{row.creator.surname}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="project">
+          <th mat-header-cell *matHeaderCellDef> Проект </th>
+          <td mat-cell *matCellDef="let row"> {{row.project.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="priority">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Пріорітет </th>
+          <td mat-cell *matCellDef="let row"> {{row.priority}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="stage">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Стадія </th>
+          <td mat-cell *matCellDef="let row"> {{row.stage}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Тип завдання </th>
+          <td mat-cell *matCellDef="let row"> {{row.type}}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsForReport"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsForReport;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+      </table>
+      <p #date></p>
+    </div>
+  </div>
+</div>
+

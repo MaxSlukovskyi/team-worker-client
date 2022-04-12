@@ -28,6 +28,7 @@ import { UserHeaderComponent } from './main-user/user-header/user-header.compone
 import { UserTasksComponent } from './main-user/user-tasks/user-tasks.component';
 import { MoreUserTaskComponent } from './main-user/user-tasks/more-user-task/more-user-task.component';
 import { StatisticsComponent } from './admin/statistics/statistics.component';
+import { DeletePositionByUserComponent } from './admin/users/delete-position-by-user/delete-position-by-user.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { StatisticsComponent } from './admin/statistics/statistics.component';
     UserHeaderComponent,
     UserTasksComponent,
     MoreUserTaskComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    DeletePositionByUserComponent
   ],
   imports: [
     BrowserModule,

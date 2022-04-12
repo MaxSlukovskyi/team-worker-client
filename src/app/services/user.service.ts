@@ -38,4 +38,8 @@ export class UserService {
     return this.httpClient.get(USER_API + 'get/all/position/' + id);
   }
 
+  public deleteUserPosition(id: number, position: Position): Observable<any> {
+    return this.httpClient.put(USER_ADMIN_API + 'delete/position/' + id, position);
+  }
+
 }

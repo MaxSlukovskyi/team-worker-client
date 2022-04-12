@@ -17,6 +17,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 // @ts-ignore
 import htmlToPdfmake from 'html-to-pdfmake';
 import {AddUserToProjectComponent} from "./add-user-to-project/add-user-to-project.component";
+import {DeletePositionByUserComponent} from "./delete-position-by-user/delete-position-by-user.component";
 
 @Component({
   selector: 'app-users',
@@ -49,6 +50,10 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllUsers();
+  }
+
+  removePositionFromUser() {
+    this.dialog.open(DeletePositionByUserComponent);
   }
 
   openDialog() {
@@ -92,7 +97,11 @@ export class UsersComponent implements OnInit {
         location.reload();
       },
       error: (error) => {
-        this.notificationService.showSnackBar(error.message);
+        if (error.status === 400) {
+          this.notificationService.showSnackBar('Неможливо видалити самого себе');
+        } else {
+          this.notificationService.showSnackBar('Сталася помилка');
+        }
       }
     });
   }
