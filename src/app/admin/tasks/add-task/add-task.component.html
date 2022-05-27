@@ -72,5 +72,5 @@
 </form>
 <div mat-dialog-action [align]="'end'">
   <button mat-raised-button color="warn" mat-dialog-close>Закрити</button>
-  <button style="margin-left: 10px" [disabled]="taskForm.untouched" mat-raised-button color="primary" (click)="setTask()">Додати</button>
+  <button style="margin-left: 10px" [disabled]="taskForm.untouched" mat-raised-button color="primary" (click)="setTask()">{{buttonText}}</button>
 </div>

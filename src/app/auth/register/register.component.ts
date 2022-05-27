@@ -23,9 +23,11 @@ export class RegisterComponent implements OnInit {
   ) {
     if(this.tokenStorage.getUser()) {
       if(this.tokenStorage.getRole() === 'ROLE_ADMIN') {
-        this.router.navigate(['main']);
+        this.router.navigate(['admin/main']);
+      } else if(this.tokenStorage.getRole() === 'ROLE_MANAGER') {
+        this.router.navigate(['manager/main'])
       } else {
-        this.router.navigate(['main-user']);
+        this.router.navigate(['user/main']);
       }
     }
   }

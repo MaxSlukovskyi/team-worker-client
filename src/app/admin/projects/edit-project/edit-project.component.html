@@ -31,6 +31,14 @@
           </mat-select>
         </mat-form-field>
       </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Керівник проекту</mat-label>
+          <mat-select formControlName="manager">
+            <mat-option *ngFor="let manager of managers" [value]="manager">{{manager.name}} {{manager.surname}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
   </div>
 </form>

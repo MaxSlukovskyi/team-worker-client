@@ -56,7 +56,9 @@ export class StatisticsComponent implements OnInit {
     private notificationService: NotificationService,
     private dialog: MatDialog
   ) {
-    if (this.tokenStorage.getRole() === 'ROLE_USER') {
+    if(this.tokenStorage.getRole() === 'ROLE_MANAGER') {
+      this.router.navigate(['manager/statistics'])
+    } else if(this.tokenStorage.getRole() === 'ROLE_USER') {
       this.router.navigate(['user/main']);
     }
   }

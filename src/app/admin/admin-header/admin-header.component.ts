@@ -40,10 +40,6 @@ export class AdminHeaderComponent implements OnInit {
     this.router.navigate(['admin/statistics'])
   }
 
-  userMode(): void {
-    this.router.navigate(['user/main']);
-  }
-
   logout(): void {
     this.tokenStorage.logOut();
   }

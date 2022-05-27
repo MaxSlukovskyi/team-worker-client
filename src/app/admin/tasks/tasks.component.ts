@@ -47,8 +47,10 @@ export class TasksComponent implements OnInit {
     private notificationService: NotificationService,
     private dialog: MatDialog
   ) {
-    if (this.tokenStorage.getRole() === 'ROLE_USER') {
-      this.router.navigate(['user/main']);
+    if(this.tokenStorage.getRole() === 'ROLE_MANAGER') {
+      this.router.navigate(['manager/tasks'])
+    } else if(this.tokenStorage.getRole() === 'ROLE_USER') {
+      this.router.navigate(['user/tasks']);
     }
   }
 
@@ -155,6 +157,18 @@ export class TasksComponent implements OnInit {
     this.tasksService.changeStage(row.id,'RELEASED').subscribe({
       next: (data) => {
         this.notificationService.showSnackBar('Завдання виконано');
+        location.reload();
+      },
+      error: (error) => {
+        this.notificationService.showSnackBar('Сталася помилка');
+      }
+    });
+  }
+
+  rejectTask(row:any) {
+    this.tasksService.changeStage(row.id,'IN_PROGRESS').subscribe({
+      next: (data) => {
+        this.notificationService.showSnackBar('Завдання відхилено');
         location.reload();
       },
       error: (error) => {

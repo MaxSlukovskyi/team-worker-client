@@ -69,6 +69,11 @@
         <td mat-cell *matCellDef="let row"> {{row.projectType}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="manager">
+        <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Керівник проекту </th>
+        <td mat-cell hidden *matCellDef="let row">{{row.manager.name}} {{row.manager.surname}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="positions">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Посади проекту </th>
         <td mat-cell *matCellDef="let row"> <span *ngFor="let pos of row.positions">{{pos.name}} <br></span> </td>
@@ -97,7 +102,7 @@
     </table>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100, 1000]" aria-label="Select page of users"></mat-paginator>
-
+  </div>
   <div id="pdfTable" #pdfTable>
     <div hidden style="font-size: 14px;">
       <h5 style="text-align: center;">Звіт по проектам</h5>
@@ -135,7 +140,3 @@
     <p #date></p>
   </div>
 </div>
-
-
-
-

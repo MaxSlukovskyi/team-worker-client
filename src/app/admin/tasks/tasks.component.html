@@ -316,6 +316,9 @@
         <button mat-button (click)="acceptTask(row)" color="primary">
           Прийняти
         </button>
+        <button mat-button (click)="rejectTask(row)" color="warn">
+          Відхилити
+        </button>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

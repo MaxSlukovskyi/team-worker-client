@@ -72,7 +72,7 @@ export class AddUserToProjectComponent implements OnInit {
   updateUser(): void {
     this.userService.setPosition(this.userForm.value.user.id, this.userForm.value.position).subscribe({
       next: (data) => {
-        this.notificationService.showSnackBar('Посаду успішно додано');
+        this.notificationService.showSnackBar('Працівника успішно додано');
         this.userForm.reset();
         this.dialogRef.close();
         location.reload();

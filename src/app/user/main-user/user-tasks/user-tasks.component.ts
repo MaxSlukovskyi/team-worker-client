@@ -1,14 +1,14 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import {Task} from "../../models/Task";
+import {Task} from "../../../models/Task";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {TokenStorageService} from "../../services/token-storage.service";
+import {TokenStorageService} from "../../../services/token-storage.service";
 import {Router} from "@angular/router";
-import {TaskService} from "../../services/task.service";
-import {NotificationService} from "../../services/notification.service";
+import {TaskService} from "../../../services/task.service";
+import {NotificationService} from "../../../services/notification.service";
 import {MatDialog} from "@angular/material/dialog";
-import {MoreInfoTaskComponent} from "../../admin/tasks/more-info-task/more-info-task.component";
+import {MoreInfoTaskComponent} from "../../../admin/tasks/more-info-task/more-info-task.component";
 import {MoreUserTaskComponent} from "./more-user-task/more-user-task.component";
 
 @Component({

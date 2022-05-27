@@ -21,6 +21,7 @@ export class AddTaskComponent implements OnInit {
   positions: Position[];
   users: User[];
   task: Task;
+  buttonText: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -39,14 +40,15 @@ export class AddTaskComponent implements OnInit {
     if(this.editData) {
       this.taskForm = this.formBuilder.group({
         name: [this.editData.name, Validators.required],
-        project: ['', Validators.required],
+        project: [this.editData.project, Validators.required],
         dueTime: ['', Validators.required],
-        position: ['', Validators.required],
-        assignee: ['', Validators.required],
+        position: [this.editData.position, Validators.required],
+        assignee: [this.editData.assignee, Validators.required],
         priority: [this.editData.priority, Validators.required],
         type: [this.editData.type, Validators.required],
         description: [this.editData.description, Validators.required]
       });
+      this.buttonText = 'Зберегти';
     } else {
       this.taskForm = this.formBuilder.group({
         name: ['', Validators.required],
@@ -60,6 +62,7 @@ export class AddTaskComponent implements OnInit {
         stage: ['', Validators.required],
         type: ['', Validators.required]
       });
+      this.buttonText = 'Додати';
     }
   }
 
@@ -94,7 +97,6 @@ export class AddTaskComponent implements OnInit {
   }
 
   setTask(): void {
-    console.log(AddTaskComponent.convertToLocalDate(this.taskForm.value.dueTime));
     if(this.editData) {
       this.taskService.updateTask(this.editData.id, {
         id: 0,

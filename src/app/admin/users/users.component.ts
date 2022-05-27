@@ -26,7 +26,7 @@ import {DeletePositionByUserComponent} from "./delete-position-by-user/delete-po
 })
 export class UsersComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'surname','username','position', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'surname','username','position','role','action'];
   displayedColumnsForReport: string[] = ['name', 'surname','username','position'];
   dataSource: MatTableDataSource<User>;
   users: User[];
@@ -41,9 +41,11 @@ export class UsersComponent implements OnInit {
     private tokenStorage: TokenStorageService,
     private notificationService: NotificationService,
     private router: Router,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {
-    if (this.tokenStorage.getRole() === 'ROLE_USER') {
+    if(this.tokenStorage.getRole() === 'ROLE_MANAGER') {
+      this.router.navigate(['manager/users'])
+    } else if(this.tokenStorage.getRole() === 'ROLE_USER') {
       this.router.navigate(['user/main']);
     }
   }

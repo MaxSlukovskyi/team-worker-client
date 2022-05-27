@@ -36,13 +36,20 @@ export class EditUserComponent implements OnInit {
         name: ['', Validators.required],
         surname: ['', Validators.required],
         username: ['', Validators.required],
-        projects: ['', Validators.required]
+        projects: ['', Validators.required],
+        role: ['', Validators.required]
       });
 
       this.userForm.controls['name'].setValue(this.editData.name);
       this.userForm.controls['surname'].setValue(this.editData.surname);
       this.userForm.controls['username'].setValue(this.editData.username);
       this.userForm.controls['projects'].setValue(this.editData.projects);
+
+      if(this.editData.roles[0].name === 'ROLE_MANAGER') {
+        this.userForm.controls['role'].setValue(true);
+      } else {
+        this.userForm.controls['role'].setValue(false);
+      }
     }
   }
 
@@ -57,19 +64,24 @@ export class EditUserComponent implements OnInit {
   }
 
   updateUser(): void {
-           this.userService.update(this.userForm.value, this.editData.id).subscribe({
-          next: (data) => {
-            this.notificationService.showSnackBar('Дані користувача оновлено');
-            this.userForm.reset();
-            this.dialogRef.close();
-            location.reload();
-          },
-          error: (error) => {
-            this.notificationService.showSnackBar(error.status);
-            this.userForm.reset();
-            this.dialogRef.close();
-            location.reload();
-          }
-        });
+    this.userService.update(this.userForm.value, this.editData.id).subscribe({
+      next: (data) => {
+        if(this.userForm.value.role) {
+          this.userService.updateRole('ROLE_MANAGER', this.editData.id).subscribe();
+        } else {
+          this.userService.updateRole('ROLE_USER', this.editData.id).subscribe();
+        }
+        this.notificationService.showSnackBar('Дані користувача оновлено');
+        this.userForm.reset();
+        this.dialogRef.close();
+        location.reload();
+      },
+      error: (error) => {
+        this.notificationService.showSnackBar(error.status);
+        this.userForm.reset();
+        this.dialogRef.close();
+        location.reload();
       }
+    });
+  }
 }

@@ -26,6 +26,8 @@ export class LoginComponent implements OnInit {
     if(this.tokenStorage.getUser()) {
       if(this.tokenStorage.getRole() === 'ROLE_ADMIN') {
         this.router.navigate(['admin/main']);
+      } else if(this.tokenStorage.getRole() === 'ROLE_MANAGER') {
+        this.router.navigate(['manager/main'])
       } else {
         this.router.navigate(['user/main']);
       }
@@ -54,12 +56,14 @@ export class LoginComponent implements OnInit {
           this.notificationService.showSnackBar('Вітаємо, ' + this.tokenStorage.getUser().name);
 
           for(var i = 0; i < this.tokenStorage.getUser().roles.length; i++) {
-            if(this.tokenStorage.getUser().roles[i].name === 'ROLE_ADMIN') {
+            if(this.tokenStorage.getUser().roles[i].name === 'ROLE_ADMIN'||this.tokenStorage.getUser().roles[i].name === 'ROLE_MANAGER') {
               this.tokenStorage.setRole(this.tokenStorage.getUser().roles[i]);
+              console.log(this.tokenStorage.getRole());
               location.reload();
               break;
             }
             this.tokenStorage.setRole(this.tokenStorage.getUser().roles[i]);
+            console.log(this.tokenStorage.getRole());
             location.reload();
           }
         }

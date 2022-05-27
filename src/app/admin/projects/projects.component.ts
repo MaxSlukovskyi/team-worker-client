@@ -27,7 +27,7 @@ import {DeletePositionFromProjectComponent} from "./delete-position-from-project
 })
 export class ProjectsComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'createTime','projectStage','projectType','positions', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'createTime','projectStage','projectType','manager','positions', 'action'];
   displayedColumnsForReport: string[] = ['name', 'createTime','projectStage','projectType','positions'];
   dataSource: MatTableDataSource<Project>;
   projects: Project[];
@@ -44,7 +44,9 @@ export class ProjectsComponent implements OnInit {
     private tokenStorage: TokenStorageService,
     private router: Router
   ) {
-    if (this.tokenStorage.getRole() === 'ROLE_USER') {
+    if(this.tokenStorage.getRole() === 'ROLE_MANAGER') {
+      this.router.navigate(['manager/projects'])
+    } else if(this.tokenStorage.getRole() === 'ROLE_USER') {
       this.router.navigate(['user/main']);
     }
   }

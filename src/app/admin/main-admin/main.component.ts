@@ -14,7 +14,9 @@ export class MainComponent implements OnInit {
     public tokenStorage: TokenStorageService,
     private router: Router) {
 
-    if (this.tokenStorage.getRole() === 'ROLE_USER') {
+    if(this.tokenStorage.getRole() === 'ROLE_MANAGER') {
+      this.router.navigate(['manager/main'])
+    } else if(this.tokenStorage.getRole() === 'ROLE_USER') {
       this.router.navigate(['user/main']);
     }
   }

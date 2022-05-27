@@ -1,4 +1,5 @@
 import {Position} from "./Position";
+import {User} from "./User";
 
 export interface Project{
   id: number;
@@ -6,6 +7,6 @@ export interface Project{
   createTime: string;
   projectStage: string;
   projectType: string;
-  //tasks: Task[];
+  manager: User;
   positions: Position[];
 }
