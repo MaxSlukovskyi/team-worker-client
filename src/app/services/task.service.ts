@@ -7,6 +7,7 @@ import {StatisticsRequest} from "../models/StatisticsRequest";
 
 const TASK_ADMIN_API = 'http://localhost:8080/api/v1/admin/tasks/';
 const TASK_USER_API = 'http://localhost:8080/api/v1/tasks/'
+const TASK_MANAGER_API = 'http://localhost:8080/api/v1/manager/task/'
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,16 @@ export class TaskService {
     return this.httpClient.get(TASK_ADMIN_API + 'get/all');
   }
 
+  public getAllTasksForManager(): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/all');
+  }
+
   public getTasksByStage(stage: string): Observable<any> {
     return this.httpClient.get(TASK_USER_API + 'get/all/' + stage);
+  }
+
+  public getTasksByStageForManager(stage: string): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/all/' + stage);
   }
 
   public getTasksByStageForAdmin(stage: string): Observable<any> {
@@ -32,7 +41,7 @@ export class TaskService {
   }
 
   public updateTask(id: number, task: Task): Observable<any> {
-    return this.httpClient.put(TASK_ADMIN_API + 'update/' + id, task);
+    return this.httpClient.put(TASK_MANAGER_API + 'update/' + id, task);
   }
 
   public deleteTask(id: number): Observable<any> {

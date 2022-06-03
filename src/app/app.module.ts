@@ -40,6 +40,9 @@ import { DeletePositionByManagerComponent } from './manager/workers-manager/dele
 import { AddPositionToManagerProjectComponent } from './manager/projects-manager/add-position-to-manager-project/add-position-to-manager-project.component';
 import { DeletePositionFromManagerProjectComponent } from './manager/projects-manager/delete-position-from-manager-project/delete-position-from-manager-project.component';
 import { EditProjectByManagerComponent } from './manager/projects-manager/edit-project-by-manager/edit-project-by-manager.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { AddTaskByManagerComponent } from './manager/tasks-manager/add-task-by-manager/add-task-by-manager.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +77,9 @@ import { EditProjectByManagerComponent } from './manager/projects-manager/edit-p
     DeletePositionByManagerComponent,
     AddPositionToManagerProjectComponent,
     DeletePositionFromManagerProjectComponent,
-    EditProjectByManagerComponent
+    EditProjectByManagerComponent,
+    AddTaskByManagerComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +88,8 @@ import { EditProjectByManagerComponent } from './manager/projects-manager/edit-p
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    DragDropModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},

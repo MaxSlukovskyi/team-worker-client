@@ -6,15 +6,16 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>Введіть логін</mat-label>
-            <input matInput
-                  formControlName="username">
+            <input matInput placeholder="example@example.com" required email formControlName="username">
           </mat-form-field>
         </div>
         <div>
           <mat-form-field appearance="outline">
             <mat-label>Введіть пароль</mat-label>
-            <input type="password" matInput
-                   formControlName="password">
+            <input [type]="hide ? 'password' : 'text'" matInput formControlName="password">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
           </mat-form-field>
         </div>
       </div>

@@ -3,7 +3,7 @@ import {AuthService} from "../../services/auth.service";
 import {TokenStorageService} from "../../services/token-storage.service";
 import {NotificationService} from "../../services/notification.service";
 import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validator, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validator, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 
 @Component({
@@ -12,7 +12,7 @@ import {UserService} from "../../services/user.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  hide = true;
   public loginForm: FormGroup;
 
   constructor(

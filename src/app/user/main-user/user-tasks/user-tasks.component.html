@@ -1,461 +1,230 @@
 <app-user-header></app-user-header>
-<div class="container">
-  <h1 class="mt-5">Нові завдання</h1>
 
-  <div style="display: flex; flex-direction: row; justify-content: space-between">
+<div class="flex-wrapper">
+  <div style="margin-left: 40px; margin-top: 40px">
 
-    <mat-form-field appearance="outline">
-      <mat-label>Пошук</mat-label>
-      <input matInput (keyup)="applyFilterTasksCreated($event)" #input>
-    </mat-form-field>
-  </div>
+    <h1>Ваші завдання</h1>
 
-  <table mat-table [dataSource]="dataSourceTasksCreated" matSort class="mat-elevation-z8">
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <div class="mat-sort-header-container">
-        <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> ID </th>
+    <div style="overflow-x: auto; overflow-y: hidden; white-space: nowrap;" cdkDropListGroup>
+      <div class="example-container">
+        <div class="head-title">Нові завдання<span *ngIf="tasksCreated.length > 0"> - {{tasksCreated.length}}</span></div>
+
+        <div style="background: rgba(169, 222, 255, 0.3)"
+             cdkDropList
+             [cdkDropListData]="tasksCreated"
+             class="example-list"
+        >
+          <div class="example-box" *ngFor="let item of tasksCreated" cdkDrag>
+
+            <div>
+              <div style="font-weight: 500; font-size: 16px">
+                {{item.name}}
+              </div>
+              <div style="display: flex">
+                <div *ngIf="item.priority === 'LOW'" style="background: rgba(0, 201, 67, 0.52); border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Низький
+                </div>
+                <div *ngIf="item.priority === 'MEDIUM'" style="background: rgba(255, 149, 0, 0.6); border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Середній
+                </div>
+                <div *ngIf="item.priority === 'HIGH'" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Високий
+                </div>
+              </div>
+
+              <div style="font-weight: 300; font-size: 14px">
+                Для: {{item.assignee.name}} {{item.assignee.surname}}
+              </div>
+              <div style="display: flex">
+                <div *ngIf="!item.overdue" style="background: white; font-weight: 400">
+                  {{item.dueTime}}
+                </div>
+                <div *ngIf="item.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px; font-weight: 400">
+                  {{item.dueTime}}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div style="position: absolute; right: 0; top: 0; font-weight: 300; font-size: 12px;background: rgba(169, 222, 255, 0.3);">
+                <div style="margin-left: 5px; margin-right: 5px; margin-top: 1px; margin-bottom: 1px">
+                  {{item.project.name}}
+                </div>
+              </div>
+              <button mat-icon-button (click)="moreAboutTask(item)" color="primary">
+                <mat-icon>more</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <td mat-cell hidden *matCellDef="let row"> {{row.id}} </td>
-    </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Назва завдання </th>
-      <td mat-cell class="name-task" *matCellDef="let row"> {{row.name}} </td>
-    </ng-container>
+      <div class="example-container">
+        <div class="head-title">В процесі<span *ngIf="tasksInProgress.length > 0"> - {{tasksInProgress.length}}</span></div>
 
-    <ng-container matColumnDef="description">
-      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Опис </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.description}} </td>
-    </ng-container>
+        <div
+          style="background: rgba(169, 222, 255, 0.3)"
+          cdkDropList
+          [cdkDropListData]="tasksInProgress"
+          class="example-list"
+          (cdkDropListDropped)="dropToInProgress($event)">
+          <div class="example-box" *ngFor="let item of tasksInProgress" cdkDrag>
+            <div>
+              <div style="font-weight: 500; font-size: 16px">
+                {{item.name}}
+              </div>
 
-    <ng-container matColumnDef="createTime">
-      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата створення </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.createTime}} </td>
-    </ng-container>
+              <div style="display: flex">
+                <div *ngIf="item.priority === 'LOW'" style="background: rgba(0, 201, 67, 0.52); border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Низький
+                </div>
+                <div *ngIf="item.priority === 'MEDIUM'" style="background: rgba(255, 149, 0, 0.6); border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Середній
+                </div>
+                <div *ngIf="item.priority === 'HIGH'" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Високий
+                </div>
+              </div>
 
-    <ng-container matColumnDef="dueTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Дедлайн </th>
-      <td mat-cell *matCellDef="let row">
-        <div *ngIf="row.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
-          {{row.dueTime}}
+              <div style="font-weight: 300; font-size: 14px">
+                Для: {{item.assignee.name}} {{item.assignee.surname}}
+              </div>
+              <div style="display: flex">
+                <div *ngIf="item.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px; font-weight: 400">
+                  {{item.dueTime}}
+                </div>
+                <div *ngIf="!item.overdue" style="background: white; font-weight: 400">
+                  {{item.dueTime}}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="position: absolute; right: 0; top: 0; font-weight: 300; font-size: 12px;background: rgba(169, 222, 255, 0.3);">
+                <div style="margin-left: 5px; margin-right: 5px; margin-top: 1px; margin-bottom: 1px">
+                  {{item.project.name}}
+                </div>
+              </div>
+              <button mat-icon-button (click)="moreAboutTask(item)" color="primary">
+                <mat-icon>more</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
-        <div *ngIf="!row.overdue" style="background: white">
-          {{row.dueTime}}
+      </div>
+
+      <div class="example-container">
+        <div class="head-title">На перевірці<span *ngIf="tasksOnReview.length > 0"> - {{tasksOnReview.length}}</span></div>
+
+        <div
+          style="background: rgba(169, 222, 255, 0.3)"
+          cdkDropList
+          [cdkDropListData]="tasksOnReview"
+          class="example-list"
+          (cdkDropListDropped)="dropToReview($event)">
+          <div class="example-box" *ngFor="let item of tasksOnReview"  cdkDrag>
+            <div>
+              <div style="font-weight: 500; font-size: 16px">
+                {{item.name}}
+              </div>
+
+              <div style="display: flex">
+
+                <div *ngIf="item.priority === 'LOW'" style="background: rgba(0, 201, 67, 0.52); border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Низький
+                </div>
+                <div *ngIf="item.priority === 'MEDIUM'" style="background: rgba(255, 149, 0, 0.6); border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Середній
+                </div>
+                <div *ngIf="item.priority === 'HIGH'" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Високий
+                </div>
+              </div>
+
+              <div style="font-weight: 300; font-size: 14px">
+                Для: {{item.assignee.name}} {{item.assignee.surname}}
+              </div>
+              <div style="display: flex">
+                <div *ngIf="item.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px; font-weight: 400">
+                  {{item.dueTime}}
+                </div>
+                <div *ngIf="!item.overdue" style="background: white; font-weight: 400">
+                  {{item.dueTime}}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="position: absolute; right: 0; top: 0; font-weight: 300; font-size: 12px;background: rgba(169, 222, 255, 0.3);">
+                <div style="margin-left: 5px; margin-right: 5px; margin-top: 1px; margin-bottom: 1px">
+                  {{item.project.name}}
+                </div>
+              </div>
+              <button mat-icon-button (click)="moreAboutTask(item)" color="primary">
+                <mat-icon>more</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
-      </td>
-    </ng-container>
+      </div>
 
-    <ng-container matColumnDef="startTime">
-      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата початку виконання </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.startTime}} </td>
-    </ng-container>
+      <div class="example-container">
+        <div class="head-title">Виконані<span *ngIf="tasksReleased.length > 0"> - {{tasksReleased.length}}</span></div>
+        <div
+          style="background: rgba(169, 222, 255, 0.3)"
+          cdkDropList
+          [cdkDropListData]="tasksReleased"
+          class="example-list"
+          (cdkDropListDropped)="dropToRelease($event)">
+          <div class="example-box" *ngFor="let item of tasksReleased"  cdkDrag>
+            <mat-icon color="primary">check_circle</mat-icon>
+            <div>
+              <div style="font-weight: 500; font-size: 16px">
+                {{item.name}}
+              </div>
 
-    <ng-container matColumnDef="endTime">
-      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата закінчення </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.endTime}} </td>
-    </ng-container>
+              <div style="display: flex">
+                <div *ngIf="item.priority === 'LOW'" style="background: rgba(0, 201, 67, 0.52); border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Низький
+                </div>
+                <div *ngIf="item.priority === 'MEDIUM'" style="background: rgba(255, 149, 0, 0.6); border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Середній
+                </div>
+                <div *ngIf="item.priority === 'HIGH'" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
+                  Високий
+                </div>
+              </div>
 
-    <ng-container matColumnDef="assignee">
-      <th mat-header-cell *matHeaderCellDef> Виконавець </th>
-      <td mat-cell *matCellDef="let row"> {{row.assignee.name}} {{row.assignee.surname}} </td>
-    </ng-container>
+              <div style="font-weight: 300; font-size: 14px">
+                Для: {{item.assignee.name}} {{item.assignee.surname}}
+              </div>
 
-    <ng-container matColumnDef="creator">
-      <th mat-header-cell *matHeaderCellDef> Автор </th>
-      <td mat-cell *matCellDef="let row"> {{row.creator.name}} {{row.creator.surname}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="lastEditTime">
-      <th mat-header-cell hidden *matHeaderCellDef mat-sort-header> Дата редагування </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.lastEditTime}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="project">
-      <th mat-header-cell *matHeaderCellDef> Проект </th>
-      <td mat-cell id="name-project" *matCellDef="let row"> {{row.project.name}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="priority">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Пріорітет </th>
-      <td mat-cell *matCellDef="let row"> {{row.priority}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="stage">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Стадія </th>
-      <td mat-cell  *matCellDef="let row">{{row.stage}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Тип завдання </th>
-      <td mat-cell *matCellDef="let row"> {{row.type}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let row">
-        <button mat-icon-button (click)="moreAboutTask(row)" color="primary">
-          <mat-icon>more</mat-icon>
-        </button>
-        <button mat-button (click)="startTask(row)" color="primary">
-          Розпочати
-        </button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    <!-- Row shown when there is no matching data. -->
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">Не знайдено завдань</td>
-    </tr>
-  </table>
-
-  <mat-paginator #paginatorNewTask [pageSizeOptions]="[5, 10, 25, 100, 1000]" aria-label="Select page of users"></mat-paginator>
-
+              <div style="display: flex">
+                <div *ngIf="item.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px; font-weight: 400">
+                  {{item.dueTime}}
+                </div>
+                <div *ngIf="!item.overdue" style="background: white; font-weight: 400">
+                  {{item.dueTime}}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="position: absolute; right: 0; top: 0; font-weight: 300; font-size: 12px;background: rgba(169, 222, 255, 0.3);">
+                <div style="margin-left: 5px; margin-right: 5px; margin-top: 1px; margin-bottom: 1px">
+                  {{item.project.name}}
+                </div>
+              </div>
+              <button mat-icon-button (click)="moreAboutTask(item)" color="primary">
+                <mat-icon>more</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
 </div>
 
-<div class="container">
-  <h1 class="mt-5">Завдання в роботі</h1>
 
-  <div style="display: flex; flex-direction: row; justify-content: space-between">
-
-    <mat-form-field appearance="outline">
-      <mat-label>Пошук</mat-label>
-      <input matInput (keyup)="applyFilterTasksInProgress($event)" #input>
-    </mat-form-field>
-  </div>
-
-  <table mat-table [dataSource]="dataSourceTasksInProgress" matSort class="mat-elevation-z8">
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <div class="mat-sort-header-container">
-        <th mat-header-cell hidden *matHeaderCellDef> ID </th>
-      </div>
-      <td mat-cell hidden *matCellDef="let row"> {{row.id}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Назва завдання </th>
-      <td mat-cell class="name-task" *matCellDef="let row"> {{row.name}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="description">
-      <th mat-header-cell hidden *matHeaderCellDef> Опис </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.description}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="createTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата створення </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.createTime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="dueTime">
-      <th mat-header-cell *matHeaderCellDef> Дедлайн </th>
-      <td mat-cell *matCellDef="let row">
-        <div *ngIf="row.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
-          {{row.dueTime}}
-        </div>
-        <div *ngIf="!row.overdue" style="background: white">
-          {{row.dueTime}}
-        </div>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="startTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата початку виконання </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.startTime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="endTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата закінчення </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.endTime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="assignee">
-      <th mat-header-cell *matHeaderCellDef> Виконавець </th>
-      <td mat-cell *matCellDef="let row"> {{row.assignee.name}} {{row.assignee.surname}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="creator">
-      <th mat-header-cell *matHeaderCellDef> Автор </th>
-      <td mat-cell *matCellDef="let row"> {{row.creator.name}} {{row.creator.surname}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="lastEditTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата редагування </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.lastEditTime}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="project">
-      <th mat-header-cell *matHeaderCellDef> Проект </th>
-      <td mat-cell id="name-project" *matCellDef="let row"> {{row.project.name}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="priority">
-      <th mat-header-cell *matHeaderCellDef> Пріорітет </th>
-      <td mat-cell *matCellDef="let row"> {{row.priority}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="stage">
-      <th mat-header-cell *matHeaderCellDef> Стадія </th>
-      <td mat-cell *matCellDef="let row"> {{row.stage}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Тип завдання </th>
-      <td mat-cell *matCellDef="let row"> {{row.type}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let row">
-        <button mat-icon-button (click)="moreAboutTask(row)" color="primary">
-          <mat-icon>more</mat-icon>
-        </button>
-        <button mat-button (click)="finishTask(row)" color="primary">
-          Завершити
-        </button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    <!-- Row shown when there is no matching data. -->
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">Завдання відсутні</td>
-    </tr>
-  </table>
-
-  <mat-paginator #paginatorInProgress [pageSizeOptions]="[5, 10, 25, 100, 1000]" aria-label="Select page of users"></mat-paginator>
-
-</div>
-
-<div class="container">
-  <h1 class="mt-5">Завдання на перевірці</h1>
-
-  <div style="display: flex; flex-direction: row; justify-content: space-between">
-
-    <mat-form-field appearance="outline">
-      <mat-label>Пошук</mat-label>
-      <input matInput (keyup)="applyFilterTasksOnReview($event)" #input>
-    </mat-form-field>
-  </div>
-
-  <table mat-table [dataSource]="dataSourceTasksOnReview" #sortOnReview matSort class="mat-elevation-z8">
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <div class="mat-sort-header-container">
-        <th mat-header-cell hidden *matHeaderCellDef> ID </th>
-      </div>
-      <td mat-cell hidden *matCellDef="let row"> {{row.id}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Назва завдання </th>
-      <td mat-cell class="name-task" *matCellDef="let row"> {{row.name}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="description">
-      <th mat-header-cell hidden *matHeaderCellDef> Опис </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.description}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="createTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата створення </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.createTime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="dueTime">
-      <th mat-header-cell *matHeaderCellDef> Дедлайн </th>
-      <td mat-cell *matCellDef="let row">
-        <div *ngIf="row.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
-          {{row.dueTime}}
-        </div>
-        <div *ngIf="!row.overdue" style="background: white">
-          {{row.dueTime}}
-        </div>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="startTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата початку виконання </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.startTime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="endTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата закінчення </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.endTime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="assignee">
-      <th mat-header-cell *matHeaderCellDef> Виконавець </th>
-      <td mat-cell *matCellDef="let row"> {{row.assignee.name}} {{row.assignee.surname}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="creator">
-      <th mat-header-cell *matHeaderCellDef> Автор </th>
-      <td mat-cell *matCellDef="let row"> {{row.creator.name}} {{row.creator.surname}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="lastEditTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата редагування </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.lastEditTime}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="project">
-      <th mat-header-cell *matHeaderCellDef> Проект </th>
-      <td mat-cell id="name-project" *matCellDef="let row"> {{row.project.name}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="priority">
-      <th mat-header-cell *matHeaderCellDef> Пріорітет </th>
-      <td mat-cell *matCellDef="let row"> {{row.priority}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="stage">
-      <th mat-header-cell *matHeaderCellDef> Стадія </th>
-      <td mat-cell *matCellDef="let row"> {{row.stage}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Тип завдання </th>
-      <td mat-cell *matCellDef="let row"> {{row.type}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let row">
-        <button mat-icon-button (click)="moreAboutTask(row)" color="primary">
-          <mat-icon>more</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    <!-- Row shown when there is no matching data. -->
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">Завдання відсутні</td>
-    </tr>
-  </table>
-
-  <mat-paginator #paginatorOnReview [pageSizeOptions]="[5, 10, 25, 100, 1000]" aria-label="Select page of users"></mat-paginator>
-
-</div>
-
-<div class="container">
-  <h1 class="mt-5">Виконані завдання</h1>
-
-  <div style="display: flex; flex-direction: row; justify-content: space-between">
-
-    <mat-form-field appearance="outline">
-      <mat-label>Пошук</mat-label>
-      <input matInput (keyup)="applyFilterTasksReleased($event)" #input>
-    </mat-form-field>
-  </div>
-
-  <table mat-table [dataSource]="dataSourceTasksReleased" matSort class="mat-elevation-z8">
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <div class="mat-sort-header-container">
-        <th mat-header-cell hidden *matHeaderCellDef> ID </th>
-      </div>
-      <td mat-cell hidden *matCellDef="let row"> {{row.id}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Назва завдання </th>
-      <td mat-cell class="name-task" *matCellDef="let row"> {{row.name}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="description">
-      <th mat-header-cell hidden *matHeaderCellDef> Опис </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.description}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="createTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата створення </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.createTime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="dueTime">
-      <th mat-header-cell *matHeaderCellDef> Дедлайн </th>
-      <td mat-cell *matCellDef="let row">
-        <div *ngIf="row.overdue" style="background: tomato; border-radius: 4px; padding-left: 7px; padding-right: 7px">
-          {{row.dueTime}}
-        </div>
-        <div *ngIf="!row.overdue" style="background: white">
-          {{row.dueTime}}
-        </div>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="startTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата початку виконання </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.startTime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="endTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата закінчення </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.endTime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="assignee">
-      <th mat-header-cell *matHeaderCellDef> Виконавець </th>
-      <td mat-cell *matCellDef="let row"> {{row.assignee.name}} {{row.assignee.surname}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="creator">
-      <th mat-header-cell *matHeaderCellDef> Автор </th>
-      <td mat-cell *matCellDef="let row"> {{row.creator.name}} {{row.creator.surname}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="lastEditTime">
-      <th mat-header-cell hidden *matHeaderCellDef> Дата редагування </th>
-      <td mat-cell hidden *matCellDef="let row"> {{row.lastEditTime}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="project">
-      <th mat-header-cell *matHeaderCellDef> Проект </th>
-      <td mat-cell id="name-project" *matCellDef="let row"> {{row.project.name}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="priority">
-      <th mat-header-cell *matHeaderCellDef> Пріорітет </th>
-      <td mat-cell *matCellDef="let row"> {{row.priority}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="stage">
-      <th mat-header-cell *matHeaderCellDef> Стадія </th>
-      <td mat-cell *matCellDef="let row"> {{row.stage}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Тип завдання </th>
-      <td mat-cell *matCellDef="let row"> {{row.type}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let row">
-        <button mat-icon-button (click)="moreAboutTask(row)" color="primary">
-          <mat-icon>more</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    <!-- Row shown when there is no matching data. -->
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">Завдання відсутні</td>
-    </tr>
-  </table>
-
-  <mat-paginator #paginatorFinished [pageSizeOptions]="[5, 10, 25, 100, 1000]" aria-label="Select page of users"></mat-paginator>
-
-</div>
 
 
 

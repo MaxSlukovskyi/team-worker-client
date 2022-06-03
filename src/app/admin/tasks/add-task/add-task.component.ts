@@ -15,13 +15,14 @@ import {TokenStorageService} from "../../../services/token-storage.service";
   styleUrls: ['./add-task.component.css']
 })
 export class AddTaskComponent implements OnInit {
-
   taskForm !: FormGroup;
   projects: Project[];
   positions: Position[];
   users: User[];
   task: Task;
   buttonText: string;
+
+  hidden: boolean = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -33,6 +34,7 @@ export class AddTaskComponent implements OnInit {
     private userService: UserService,
     private taskService: TaskService,
     private tokenService: TokenStorageService
+
   ) { }
 
   ngOnInit(): void {
@@ -41,8 +43,8 @@ export class AddTaskComponent implements OnInit {
       this.taskForm = this.formBuilder.group({
         name: [this.editData.name, Validators.required],
         project: [this.editData.project, Validators.required],
-        dueTime: ['', Validators.required],
-        position: [this.editData.position, Validators.required],
+        dueTime: [AddTaskComponent.dateFormat(this.editData.dueTime, 'yyyy-MM-ddThh:mm'), Validators.required],
+        position: [null, Validators.required],
         assignee: [this.editData.assignee, Validators.required],
         priority: [this.editData.priority, Validators.required],
         type: [this.editData.type, Validators.required],
@@ -50,6 +52,7 @@ export class AddTaskComponent implements OnInit {
       });
       this.buttonText = 'Зберегти';
     } else {
+      this.hidden = false;
       this.taskForm = this.formBuilder.group({
         name: ['', Validators.required],
         description: ['', Validators.required],
@@ -71,7 +74,7 @@ export class AddTaskComponent implements OnInit {
       next: (data) => {
         this.projects = <Project[]>JSON.parse(JSON.stringify(data));
       }, error: (error) => {
-        console.log('Виникла помилка при завантаженні проектів');
+        this.notificationService.showSnackBar('Виникла помилка при завантаженні проектів');
       }
     });
   }
@@ -90,7 +93,7 @@ export class AddTaskComponent implements OnInit {
           this.users = <User[]>JSON.parse(JSON.stringify(data));
         },
         error: (error) => {
-          console.log('Виникла помилка при завантаженні користувачів');
+          this.notificationService.showSnackBar('Виникла помилка при завантаженні користувачів');
         }
       })
     }
@@ -128,6 +131,7 @@ export class AddTaskComponent implements OnInit {
           location.reload();
         }
       });
+
     } else {
       this.taskService.addTask({
         id: 0,
@@ -153,19 +157,54 @@ export class AddTaskComponent implements OnInit {
           location.reload();
         },
         error: (error) => {
-          console.log(AddTaskComponent.convertToLocalDate(new Date().toLocaleDateString()));
           this.notificationService.showSnackBar('На жаль сталася помилка');
           this.taskForm.reset();
           this.dialogRef.close();
           location.reload();
-      }
+        }
       });
     }
   }
 
- private static convertToLocalDate(date: string): string {
+  private static convertToLocalDate(date: string): string {
     date.replace('-','.');
     date.replace('T',', ');
     return date;
+  }
+
+  private static dateFormat(inputDate: string, format: string) {
+    //parse the input date
+    const date = inputDate.split(',');
+    const splittedDate = date[0].split('.');
+    const dateTime = new Date(splittedDate[1]+'.'+splittedDate[0]+'.'+splittedDate[2]+', '+date[1]);
+
+    //extract the parts of the date
+    const day = dateTime.getDate();
+    const month = dateTime.getMonth()+1;
+    const year = dateTime.getFullYear();
+    const hour = dateTime.getHours();
+    const min = dateTime.getMinutes();
+
+    //replace the month
+    format = format.replace("MM", month.toString().padStart(2,"0"));
+
+    //replace the year
+    if (format.indexOf("yyyy") > -1) {
+      format = format.replace("yyyy", year.toString());
+    } else if (format.indexOf("yy") > -1) {
+      format = format.replace("yy", year.toString().substr(2,2));
+    }
+
+    //replace the day
+    format = format.replace("dd", day.toString().padStart(2,"0"));
+
+    format = format.replace("hh",hour.toString().padStart(2,"0"));
+
+    format = format.replace("mm", min.toString().padStart(2,"0"));
+    return format;
+  }
+
+  showEditAssignee() {
+    this.hidden = !this.hidden;
   }
 }

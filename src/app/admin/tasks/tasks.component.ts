@@ -99,7 +99,6 @@ export class TasksComponent implements OnInit {
   getAllTasks(): void {
     this.tasksService.getAllTasksForAdministrator().subscribe({
       next: (data) => {
-        console.log(data);
         this.tasks = <Task[]>JSON.parse(JSON.stringify(data));
         this.dataSource = new MatTableDataSource<Task>(this.tasks);
         this.dataSource.paginator = this.paginator;
