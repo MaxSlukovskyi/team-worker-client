@@ -55,4 +55,8 @@ export class UserService {
     return this.httpClient.get(USER_MANAGER_API + 'get/all/manager');
   }
 
+  public getDefaultStatistics(): Observable<any> {
+    return this.httpClient.get(USER_MANAGER_API + 'get/stats/all');
+  }
+
 }

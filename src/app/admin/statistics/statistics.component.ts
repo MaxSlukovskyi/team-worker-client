@@ -23,6 +23,7 @@ import {NotificationService} from "../../services/notification.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MoreInfoTaskComponent} from "../tasks/more-info-task/more-info-task.component";
 import {MatDialog} from "@angular/material/dialog";
+import {Statistics} from "../../models/Statistics";
 
 @Component({
   selector: 'app-statistics',
@@ -33,18 +34,15 @@ export class StatisticsComponent implements OnInit {
 
   taskForm !: FormGroup;
 
-  displayedColumns: string[] = ['id', 'name', 'description','createTime','dueTime','lastEditTime', 'startTime', 'endTime','project','assignee','creator','priority','stage', 'type', 'action'];
-  displayedColumnsForReport: string[] = ['name', 'description','createTime','dueTime', 'startTime', 'endTime','project','assignee','creator','priority','stage','type'];
-  dataSource: MatTableDataSource<Task>;
-  tasks: Task[];
+  displayedColumns: string[] = ['name', 'username','position','percentageOnTime','totalCompletedTasks'];
+  dataSource: MatTableDataSource<Statistics>;
+  stats: Statistics[];
   positions: Position[];
   users: User[];
   projects: Project[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('pdfTable') pdfTable: ElementRef;
-  @ViewChild('date') dateText: ElementRef;
 
   constructor(
     private tokenStorage: TokenStorageService,
@@ -54,7 +52,6 @@ export class StatisticsComponent implements OnInit {
     private userService: UserService,
     private taskService: TaskService,
     private notificationService: NotificationService,
-    private dialog: MatDialog
   ) {
     if(this.tokenStorage.getRole() === 'ROLE_MANAGER') {
       this.router.navigate(['manager/statistics'])
@@ -68,19 +65,28 @@ export class StatisticsComponent implements OnInit {
      this.taskForm  = this.formBuilder.group({
       project: ['', Validators.required],
       position: ['', Validators.required],
-      user: ['', Validators.required],
-      startTime: ['', Validators.required],
-       endTime: ['', Validators.required]
+      user: ['', Validators.required]
      });
+     this.getDefaultStatistics();
   }
 
-  moreAboutTask(row: any) {
-    this.dialog.open(MoreInfoTaskComponent,{
-      data: row
-    });
+  getDefaultStatistics(): void {
+    this.userService.getDefaultStatistics().subscribe({
+      next: (data) => {
+        this.stats = <Statistics[]>JSON.parse(JSON.stringify(data));
+        this.dataSource = new MatTableDataSource<Statistics>(this.stats);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        console.log(data);
+      }, error: (error) => {
+        this.notificationService.showSnackBar("На жаль сталася помилка :(");
+       /* this.tokenStorage.logOut();
+        this.router.navigate(['login']);*/
+      }
+    })
   }
 
-  getTasksByFilters(): void {
+  /*getTasksByFilters(): void {
     this.taskService.getUserTasksByFilter(this.taskForm.value.user.id,
       {
         time1: this.taskForm.value.startTime.toLocaleString(),
@@ -100,7 +106,7 @@ export class StatisticsComponent implements OnInit {
         this.router.navigate(['login']);
       }
       });
-  }
+  }*/
 
   getAllProjects(): void {
     this.projectService.getAll().subscribe({
@@ -139,22 +145,5 @@ export class StatisticsComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-
-  public downloadAsPDF(): void {
-    const user = this.tokenStorage.getUser();
-    const date = new Date().toLocaleString();
-    this.dateText.nativeElement.innerHTML = '<p>Дата видачі звіту: '+date+',<br>' +
-      'Створив: ' + user.name + ' ' + user.surname + '</p>';
-
-    const pdfTable = this.pdfTable.nativeElement;
-    var html = htmlToPdfmake(pdfTable.innerHTML);
-
-    const documentDefinition = {
-      content: html,
-      pageSize: 'A4',
-      pageOrientation: 'landscape'
-    };
-    pdfMake.createPdf(documentDefinition).open();
   }
 }

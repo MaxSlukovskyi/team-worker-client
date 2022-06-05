@@ -52,7 +52,40 @@ export class TaskService {
     return this.httpClient.put(TASK_USER_API + 'update/' + id + '/' + stage,'');
   }
 
+  public getStatsOnTimeForUser(): Observable<any> {
+    return this.httpClient.get(TASK_USER_API + 'get/stats/ontime');
+  }
+
+  public getStatsAllDoneTasks(stage: string): Observable<any> {
+    return this.httpClient.get(TASK_USER_API + 'get/stats/number/' + stage);
+  }
+
+  public getAverageTime(): Observable<any> {
+    return this.httpClient.get(TASK_USER_API + 'get/stats/average/time');
+  }
+
+  public getStatsBestMonth(): Observable<any> {
+    return this.httpClient.get(TASK_USER_API + 'get/stats/best/month');
+  }
+
+  public getStatsMonths(): Observable<any> {
+    return this.httpClient.get(TASK_USER_API + 'get/stats/months');
+  }
+
+  public getStatsTypes(): Observable<any> {
+    return this.httpClient.get(TASK_USER_API + 'get/stats/types');
+  }
+
+  public getStatsStages(): Observable<any> {
+    return this.httpClient.get(TASK_USER_API + 'get/stats/stages');
+  }
+
+  public getTaskClosest(): Observable<any> {
+    return this.httpClient.get(TASK_USER_API + 'get/stats/closest');
+  }
+
   public getUserTasksByFilter(id: number, date: StatisticsRequest): Observable<any> {
     return this.httpClient.post(TASK_ADMIN_API + 'get/all/' + id, date);
   }
+
 }

@@ -43,6 +43,10 @@ import { EditProjectByManagerComponent } from './manager/projects-manager/edit-p
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { AddTaskByManagerComponent } from './manager/tasks-manager/add-task-by-manager/add-task-by-manager.component';
 import { FooterComponent } from './footer/footer.component';
+import { GoogleChartsModule } from 'angular-google-charts';
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { StatisticsUserComponent } from './user/statistics-user/statistics-user.component';
+import {ProgressBarModule} from "angular-progress-bar"
 
 @NgModule({
   declarations: [
@@ -79,7 +83,8 @@ import { FooterComponent } from './footer/footer.component';
     DeletePositionFromManagerProjectComponent,
     EditProjectByManagerComponent,
     AddTaskByManagerComponent,
-    FooterComponent
+    FooterComponent,
+    StatisticsUserComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +94,10 @@ import { FooterComponent } from './footer/footer.component';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    DragDropModule
+    DragDropModule,
+    GoogleChartsModule,
+    NgCircleProgressModule.forRoot(),
+    ProgressBarModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},

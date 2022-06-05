@@ -14,6 +14,7 @@ import {WorkersManagerComponent} from "./manager/workers-manager/workers-manager
 import {ManagerProjectsComponent} from "./manager/projects-manager/manager-projects.component";
 import {TasksManagerComponent} from "./manager/tasks-manager/tasks-manager.component";
 import {StatisticsManagerComponent} from "./manager/statistics-manager/statistics-manager.component";
+import {StatisticsUserComponent} from "./user/statistics-user/statistics-user.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path: 'admin/statistics', component: StatisticsComponent},
   {path: 'user/main', component: MainUserComponent},
   {path: 'user/tasks', component: UserTasksComponent},
+  {path: 'user/statistics', component: StatisticsUserComponent},
   {path: 'manager/main', component: MainManagerComponent},
   {path: 'manager/workers', component: WorkersManagerComponent},
   {path: 'manager/projects', component: ManagerProjectsComponent},

@@ -22,11 +22,14 @@ export class UserHeaderComponent implements OnInit {
   }
 
   openTask(): void {
-    this.router.navigate(['user-tasks']);
+    this.router.navigate(['user/tasks']);
   }
 
   logout(): void {
     this.tokenStorage.logOut();
   }
 
+  openStatistics() {
+    this.router.navigate(['user/statistics']);
+  }
 }
