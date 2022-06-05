@@ -19,12 +19,13 @@
   display: table-row;
 }
 
-.style-column {
+.mat-cell,
+.mat-header-cell {
   word-wrap: initial;
   display: table-cell;
-  padding: 0px 60px;
+  padding: 0px 100px;
   line-break: unset;
-  width: 1%;
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
   vertical-align: middle;
@@ -36,14 +37,6 @@
   flex-direction: column;
   justify-content: space-between;
 }
-
-.example-card {
-  width: fit-content;
-  margin: 20px;
-}
-
-
-
 
 
 

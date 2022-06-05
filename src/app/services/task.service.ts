@@ -88,4 +88,36 @@ export class TaskService {
     return this.httpClient.post(TASK_ADMIN_API + 'get/all/' + id, date);
   }
 
+  public getStatsOnTimeForUserManager(id: number): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/stats/ontime/' + id);
+  }
+
+  public getStatsAllDoneTasksManager(id: number, stage: string): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/stats/number/' + id + '/' + stage);
+  }
+
+  public getAverageTimeManager(id: number): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/stats/average/time/' + id);
+  }
+
+  public getStatsBestMonthManager(id: number): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/stats/best/month/' + id);
+  }
+
+  public getStatsMonthsManager(id: number): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/stats/months/' + id);
+  }
+
+  public getStatsTypesManager(id: number): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/stats/types/' + id);
+  }
+
+  public getStatsStagesManager(id: number): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/stats/stages/' + id);
+  }
+
+  public getTaskClosestManager(id: number): Observable<any> {
+    return this.httpClient.get(TASK_MANAGER_API + 'get/stats/closest/' + id);
+  }
+
 }

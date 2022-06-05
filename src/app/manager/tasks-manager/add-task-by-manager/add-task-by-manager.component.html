@@ -1,0 +1,85 @@
+<h1 mat-dialog-title>Завдання</h1>
+<form [formGroup]="taskForm">
+  <div mat-dialog-content>
+    <div class="justify-content-center">
+
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Назва</mat-label>
+          <input matInput formControlName="name">
+        </mat-form-field>
+      </div>
+      <div *ngIf="!hidden">
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Проект</mat-label>
+            <mat-select formControlName="project">
+              <mat-option  *ngFor="let project of projects" (onSelectionChange)="setUpPositions(project, $event)" [value]="project">{{project.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Посада на проекті</mat-label>
+            <mat-select formControlName="position">
+              <mat-option *ngFor="let position of positions" (onSelectionChange)="setUpUser(position, $event)" [value]="position">{{position.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Виконавець</mat-label>
+            <mat-select formControlName="assignee">
+              <mat-option *ngFor="let user of users" [value]="user">{{user.name}} {{user.surname}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Дедлайн</mat-label>
+          <input matInput type="datetime-local" formControlName="dueTime">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Пріорітет</mat-label>
+          <mat-select formControlName="priority">
+            <mat-option value="LOW">LOW</mat-option>
+            <mat-option value="MEDIUM">MEDIUM</mat-option>
+            <mat-option value="HIGH">HIGH</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Тип завдання</mat-label>
+          <mat-select formControlName="type">
+            <mat-option value="PLAN">PLAN</mat-option>
+            <mat-option value="DESIGN">DESIGN</mat-option>
+            <mat-option value="DEBUG">DEBUG</mat-option>
+            <mat-option value="UPDATE">UPDATE</mat-option>
+            <mat-option value="CREATE">CREATE</mat-option>
+            <mat-option value="TEST">TEST</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Опис</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</form>
+  <div style="display: flex;justify-content: space-between" mat-dialog-actions>
+    <div>
+      <button *ngIf="editData" (click)="showEditAssignee()" mat-button color="primary">Змінити виконавця</button>
+    </div>
+    <div>
+      <button mat-raised-button color="warn" mat-dialog-close>Закрити</button>
+      <button style="margin-left: 10px" [disabled]="taskForm.untouched" mat-raised-button color="primary" (click)="setTask()">{{buttonText}}</button>
+    </div>
+  </div>
+

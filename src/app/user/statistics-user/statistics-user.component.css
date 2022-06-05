@@ -1,0 +1,10 @@
+.flex-wrapper {
+  display: flex;
+  min-height: -webkit-calc(100vh - 65px);
+  flex-direction: column;
+  justify-content: space-between;
+}
+.example-card {
+  width: fit-content;
+  margin: 20px;
+}

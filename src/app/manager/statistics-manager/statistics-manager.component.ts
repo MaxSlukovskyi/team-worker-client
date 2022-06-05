@@ -1,37 +1,27 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {TokenStorageService} from "../../services/token-storage.service";
-import {Router} from "@angular/router";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChartType, Row} from "angular-google-charts";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
+import {Statistics} from "../../models/Statistics";
+import {Position} from "../../models/Position";
+import {User} from "../../models/User";
+import {Project} from "../../models/Project";
 import {Task} from "../../models/Task";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-// @ts-ignore
-import pdfMake from 'pdfmake/build/pdfmake';
-// @ts-ignore
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-// @ts-ignore
-import htmlToPdfmake from 'html-to-pdfmake';
-import {Project} from "../../models/Project";
-import {Position} from "../../models/Position";
-import {User} from "../../models/User";
+import {TokenStorageService} from "../../services/token-storage.service";
+import {Router} from "@angular/router";
 import {ProjectService} from "../../services/project.service";
 import {UserService} from "../../services/user.service";
-import {TasksComponent} from "../tasks/tasks.component";
 import {TaskService} from "../../services/task.service";
 import {NotificationService} from "../../services/notification.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MoreInfoTaskComponent} from "../tasks/more-info-task/more-info-task.component";
-import {MatDialog} from "@angular/material/dialog";
-import {Statistics} from "../../models/Statistics";
-import {ChartType, Row} from "angular-google-charts";
 
 @Component({
-  selector: 'app-statistics',
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.css']
+  selector: 'app-statistics-manager',
+  templateUrl: './statistics-manager.component.html',
+  styleUrls: ['./statistics-manager.component.css']
 })
-export class StatisticsComponent implements OnInit {
+export class StatisticsManagerComponent implements OnInit {
 
   taskForm !: FormGroup;
 
@@ -102,21 +92,19 @@ export class StatisticsComponent implements OnInit {
     private taskService: TaskService,
     private notificationService: NotificationService,
   ) {
-    if(this.tokenStorage.getRole() === 'ROLE_MANAGER') {
-      this.router.navigate(['manager/statistics'])
-    } else if(this.tokenStorage.getRole() === 'ROLE_USER') {
+    if(this.tokenStorage.getRole() === 'ROLE_USER') {
       this.router.navigate(['user/main']);
     }
   }
 
   ngOnInit(): void {
     this.getAllProjects();
-     this.taskForm  = this.formBuilder.group({
+    this.taskForm  = this.formBuilder.group({
       project: ['', Validators.required],
       position: ['', Validators.required],
       user: ['', Validators.required]
-     });
-     this.getDefaultStatistics();
+    });
+    this.getDefaultStatistics();
   }
 
   getDefaultStatistics(): void {
@@ -167,7 +155,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   getAllProjects(): void {
-    this.projectService.getAll().subscribe({
+    this.projectService.getAllByAuthManager().subscribe({
       next: (data) => {
         this.projects = <Project[]>JSON.parse(JSON.stringify(data));
       }, error: (error) => {
@@ -216,8 +204,8 @@ export class StatisticsComponent implements OnInit {
       },
       error: err => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
-       this.tokenStorage.logOut();
-       this.router.navigate(['login']);
+        this.tokenStorage.logOut();
+        this.router.navigate(['login']);
       }
     });
   }
@@ -242,8 +230,8 @@ export class StatisticsComponent implements OnInit {
       },
       error: err => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
-       this.tokenStorage.logOut();
-       this.router.navigate(['login']);
+        this.tokenStorage.logOut();
+        this.router.navigate(['login']);
       }
     });
   }
@@ -264,8 +252,8 @@ export class StatisticsComponent implements OnInit {
       },
       error: err => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
-       this.tokenStorage.logOut();
-       this.router.navigate(['login']);
+        this.tokenStorage.logOut();
+        this.router.navigate(['login']);
       }
     });
   }
@@ -286,8 +274,8 @@ export class StatisticsComponent implements OnInit {
       },
       error: err => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
-       this.tokenStorage.logOut();
-       this.router.navigate(['login']);
+        this.tokenStorage.logOut();
+        this.router.navigate(['login']);
       }});
   }
 
@@ -307,8 +295,8 @@ export class StatisticsComponent implements OnInit {
       },
       error: err => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
-       this.tokenStorage.logOut();
-       this.router.navigate(['login']);
+        this.tokenStorage.logOut();
+        this.router.navigate(['login']);
       }
     });
   }
@@ -323,9 +311,10 @@ export class StatisticsComponent implements OnInit {
       },
       error: err => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
-       this.tokenStorage.logOut();
-       this.router.navigate(['login']);
+        this.tokenStorage.logOut();
+        this.router.navigate(['login']);
       }
     });
   }
+
 }

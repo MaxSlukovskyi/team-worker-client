@@ -1,0 +1,14 @@
+#controls {
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.mat-flat-button {
+  font-size: 18px;
+  padding: 5px 20px 5px 20px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
