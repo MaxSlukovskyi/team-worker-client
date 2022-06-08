@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Task} from "../../../models/Task";
-import {TokenStorageService} from "../../../services/token-storage.service";
+import {Task} from "../../models/Task";
+import {TokenStorageService} from "../../services/token-storage.service";
 import {Router} from "@angular/router";
-import {TaskService} from "../../../services/task.service";
-import {NotificationService} from "../../../services/notification.service";
+import {TaskService} from "../../services/task.service";
+import {NotificationService} from "../../services/notification.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MoreUserTaskComponent} from "./more-user-task/more-user-task.component";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";

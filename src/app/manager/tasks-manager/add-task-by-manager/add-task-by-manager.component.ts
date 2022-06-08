@@ -107,7 +107,7 @@ export class AddTaskByManagerComponent implements OnInit {
         id: 0,
         name: this.taskForm.value.name,
         description: this.taskForm.value.description,
-        createTime: AddTaskByManagerComponent.convertToLocalDate(new Date().toLocaleString()),
+        createTime: this.editData.createTime,
         dueTime: AddTaskByManagerComponent.convertToLocalDate(this.taskForm.value.dueTime),
         lastEditTime: AddTaskByManagerComponent.convertToLocalDate(new Date().toLocaleString()),
         startTime: this.taskForm.value.startTime,

@@ -25,8 +25,8 @@ import { DeletePositionFromProjectComponent } from './admin/projects/delete-posi
 import { MoreInfoTaskComponent } from './admin/tasks/more-info-task/more-info-task.component';
 import { AddTaskComponent } from './admin/tasks/add-task/add-task.component';
 import { UserHeaderComponent } from './user/user-header/user-header.component';
-import { UserTasksComponent } from './user/main-user/user-tasks/user-tasks.component';
-import { MoreUserTaskComponent } from './user/main-user/user-tasks/more-user-task/more-user-task.component';
+import { UserTasksComponent } from './user/user-tasks/user-tasks.component';
+import { MoreUserTaskComponent } from './user/user-tasks/more-user-task/more-user-task.component';
 import { StatisticsComponent } from './admin/statistics/statistics.component';
 import { DeletePositionByUserComponent } from './admin/users/delete-position-by-user/delete-position-by-user.component';
 import { ManagerHeaderComponent } from './manager/manager-header/manager-header.component';

@@ -7,7 +7,7 @@ import {UsersComponent} from "./admin/users/users.component";
 import {ProjectsComponent} from "./admin/projects/projects.component";
 import {TasksComponent} from "./admin/tasks/tasks.component";
 import {MainUserComponent} from "./user/main-user/main-user.component";
-import {UserTasksComponent} from "./user/main-user/user-tasks/user-tasks.component";
+import {UserTasksComponent} from "./user/user-tasks/user-tasks.component";
 import {StatisticsComponent} from "./admin/statistics/statistics.component";
 import {MainManagerComponent} from "./manager/main-manager/main-manager.component";
 import {WorkersManagerComponent} from "./manager/workers-manager/workers-manager.component";

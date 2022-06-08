@@ -13,7 +13,7 @@ export class MainUserComponent implements OnInit {
     public tokenService: TokenStorageService,
     private router: Router
   ) {
-    this.router.navigate(['user/tasks']);
+    this.router.navigate(['user/statistics']);
   }
 
   ngOnInit(): void {

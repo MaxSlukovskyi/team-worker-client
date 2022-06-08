@@ -1,8 +1,7 @@
 <app-manager-header></app-manager-header>
 <div class="flex-wrapper">
   <div class="container">
-    <form style="margin-top: 25px; display: flex; justify-content: center" [formGroup]="taskForm">
-      <div>
+    <form style="margin-top: 25px; display: flex; justify-content: center; flex-wrap: nowrap" [formGroup]="taskForm">
         <mat-form-field style="margin-right: 20px" appearance="outline">
           <mat-label>Проект</mat-label>
           <mat-select formControlName="project">
@@ -22,9 +21,8 @@
           </mat-select>
         </mat-form-field>
         <mat-dialog-actions>
-          <button mat-flat-button (click)="getTasksByFilters()" color="primary" style="width: auto; height: 60px;" >Показати статистику</button>
+          <button mat-flat-button (click)="getTasksByFilters()" color="primary" style="width: 200px; height: 55px;" >Показати статистику</button>
         </mat-dialog-actions>
-      </div>
     </form>
     <div *ngIf="!hideTable">
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">

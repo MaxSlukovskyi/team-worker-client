@@ -7,13 +7,13 @@
           <div>
             <mat-form-field appearance="outline">
               <mat-label>Введіть логін</mat-label>
-              <input matInput placeholder="example@example.com" required email formControlName="username">
+              <input tabindex="1" matInput placeholder="example@example.com" required email formControlName="username">
             </mat-form-field>
           </div>
           <div>
             <mat-form-field appearance="outline">
               <mat-label>Введіть пароль</mat-label>
-              <input [type]="hide ? 'password' : 'text'" matInput formControlName="password">
+              <input tabindex="2" [type]="hide ? 'password' : 'text'" matInput formControlName="password">
               <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
@@ -22,7 +22,7 @@
         </div>
 
         <div id="controls" class="row">
-          <button type="submit" (click)="submit()" [disabled]="loginForm.invalid" mat-flat-button color="primary">
+          <button tabindex="3" type="submit" (click)="submit()" [disabled]="loginForm.invalid" mat-flat-button color="primary">
             Увійти
           </button>
           <a routerLink="/register">Зареєструватися</a>

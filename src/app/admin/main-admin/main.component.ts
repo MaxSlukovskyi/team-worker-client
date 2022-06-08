@@ -19,6 +19,8 @@ export class MainComponent implements OnInit {
     } else if(this.tokenStorage.getRole() === 'ROLE_USER') {
       this.router.navigate(['user/main']);
     }
+
+    this.router.navigate(['admin/statistics']);
   }
 
   ngOnInit(): void {

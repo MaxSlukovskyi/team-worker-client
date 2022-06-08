@@ -5,7 +5,7 @@ import {Router} from "@angular/router";
 import {TaskService} from "../../services/task.service";
 import {NotificationService} from "../../services/notification.service";
 import {MatDialog} from "@angular/material/dialog";
-import {MoreUserTaskComponent} from "../../user/main-user/user-tasks/more-user-task/more-user-task.component";
+import {MoreUserTaskComponent} from "../../user/user-tasks/more-user-task/more-user-task.component";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {AddTaskComponent} from "../../admin/tasks/add-task/add-task.component";
 import {AddTaskByManagerComponent} from "./add-task-by-manager/add-task-by-manager.component";
