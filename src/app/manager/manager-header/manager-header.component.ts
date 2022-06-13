@@ -37,10 +37,6 @@ export class ManagerHeaderComponent implements OnInit {
     this.router.navigate(['manager/statistics'])
   }
 
-  userMode(): void {
-    this.router.navigate(['user/main']);
-  }
-
   logout(): void {
     this.tokenStorage.logOut();
   }
