@@ -38,6 +38,9 @@ export class TasksComponent implements OnInit {
   dataSourceCheck: MatTableDataSource<Task>;
   tasksCheck: Task[];
 
+  loading = true;
+  loadingRev = true;
+
   @ViewChild('paginatorCheck') paginatorCheck: MatPaginator;
 
   constructor(
@@ -103,6 +106,7 @@ export class TasksComponent implements OnInit {
         this.dataSource = new MatTableDataSource<Task>(this.tasks);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.loading = false;
       },
       error: (error) => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
@@ -119,8 +123,10 @@ export class TasksComponent implements OnInit {
         this.dataSourceCheck = new MatTableDataSource<Task>(this.tasksCheck);
         this.dataSourceCheck.paginator = this.paginatorCheck;
         this.dataSourceCheck.sort = this.sort;
+        this.loadingRev = false;
       },
       error: (error) => {
+        this.notificationService.showSnackBar("Не вдалося завантажити виконані завдання");
       }
     });
   }

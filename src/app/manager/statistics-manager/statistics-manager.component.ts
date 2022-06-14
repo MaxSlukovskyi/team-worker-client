@@ -34,6 +34,8 @@ export class StatisticsManagerComponent implements OnInit {
   users: User[];
   projects: Project[];
 
+  loading = true;
+
   hiddenTaskByMonth = true;
   hiddenType = true;
   hiddenStage = true;
@@ -114,7 +116,7 @@ export class StatisticsManagerComponent implements OnInit {
         this.dataSource = new MatTableDataSource<Statistics>(this.stats);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log(data);
+        this.loading = false;
       }, error: (error) => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
         this.tokenStorage.logOut();

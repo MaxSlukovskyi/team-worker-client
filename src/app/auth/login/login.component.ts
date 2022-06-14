@@ -13,6 +13,7 @@ import {UserService} from "../../services/user.service";
 })
 export class LoginComponent implements OnInit {
   hide = true;
+  loading = false;
   public loginForm: FormGroup;
 
   constructor(
@@ -46,6 +47,7 @@ export class LoginComponent implements OnInit {
   }
 
   submit(): void {
+    this.loading = true;
     this.authService.login(this.loginForm.value).subscribe(data => {
 
       this.tokenStorage.saveToken(data.token);

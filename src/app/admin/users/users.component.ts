@@ -31,6 +31,8 @@ export class UsersComponent implements OnInit {
   dataSource: MatTableDataSource<User>;
   users: User[];
 
+  loading = true;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('pdfTable') pdfTable: ElementRef;
@@ -60,10 +62,6 @@ export class UsersComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(EditUserComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
   }
 
   getAllUsers(): void {
@@ -73,6 +71,7 @@ export class UsersComponent implements OnInit {
         this.dataSource = new MatTableDataSource<User>(this.users);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.loading = false;
       }, error: (error) => {
         console.log(error);
         this.notificationService.showSnackBar("На жаль сталася помилка :(");

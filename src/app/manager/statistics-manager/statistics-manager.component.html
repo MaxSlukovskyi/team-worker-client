@@ -69,6 +69,9 @@
         <!-- Row shown when there is no matching data. -->
       </table>
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100, 1000]" aria-label="Select page of users"></mat-paginator>
+      <div *ngIf="loading"  style="display: block; margin: 10px auto; width: fit-content;">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
     </div>
   </div>
   <div *ngIf="hideTable" class="container">

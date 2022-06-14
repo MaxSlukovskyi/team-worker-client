@@ -40,6 +40,8 @@ export class WorkersManagerComponent implements OnInit {
   projectsUsers: User[];
   allUsersChecked: boolean;
 
+  loading = true;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('pdfTable') pdfTable: ElementRef;
@@ -102,8 +104,8 @@ export class WorkersManagerComponent implements OnInit {
         this.dataSource = new MatTableDataSource<User>(this.projectsUsers);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.loading = false;
       }, error: (error) => {
-        console.log(error);
         this.notificationService.showSnackBar("На жаль сталася помилка при завантаженні користувачів з ваших проектів");
         this.tokenStorage.logOut();
         this.router.navigate(['login']);

@@ -39,6 +39,10 @@ export class TasksManagerComponent implements OnInit {
   @ViewChild('date') dateText: ElementRef;
 
   task: Task;
+  loadingCreated = true;
+  loadingInProgress = true;
+  loadingOnReview = true;
+  loadingReleased = true;
 
   constructor(
     public tokenStorage: TokenStorageService,
@@ -78,6 +82,7 @@ export class TasksManagerComponent implements OnInit {
     this.tasksService.getTasksByStageForManager('CREATED').subscribe({
       next: (data) => {
         this.tasksCreated = <Task[]>JSON.parse(JSON.stringify(data));
+        this.loadingCreated = false;
       }, error: (error) => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
         this.tokenStorage.logOut();
@@ -90,6 +95,7 @@ export class TasksManagerComponent implements OnInit {
     this.tasksService.getTasksByStageForManager('IN_PROGRESS').subscribe({
       next: (data) => {
         this.tasksInProgress = <Task[]>JSON.parse(JSON.stringify(data));
+        this.loadingInProgress = false;
       }, error: (error) => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
         this.tokenStorage.logOut();
@@ -103,6 +109,7 @@ export class TasksManagerComponent implements OnInit {
     this.tasksService.getTasksByStageForManager('ON_REVIEW').subscribe({
       next: (data) => {
         this.tasksOnReview = <Task[]>JSON.parse(JSON.stringify(data));
+        this.loadingOnReview = false;
       }, error: (error) => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
         this.tokenStorage.logOut();
@@ -115,6 +122,7 @@ export class TasksManagerComponent implements OnInit {
     this.tasksService.getTasksByStageForManager('RELEASED').subscribe({
       next: (data) => {
         this.tasksReleased = <Task[]>JSON.parse(JSON.stringify(data));
+        this.loadingReleased= false;
       }, error: (error) => {
         this.notificationService.showSnackBar("На жаль сталася помилка :(");
         this.tokenStorage.logOut();

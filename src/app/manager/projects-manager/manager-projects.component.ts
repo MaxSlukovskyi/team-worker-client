@@ -46,6 +46,8 @@ export class ManagerProjectsComponent implements OnInit {
   dataSource: MatTableDataSource<Project>;
   projects: Project[];
 
+  loading = true;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('pdfTable') pdfTable: ElementRef;
@@ -74,6 +76,7 @@ export class ManagerProjectsComponent implements OnInit {
         this.dataSource = new MatTableDataSource<Project>(this.projects);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.loading = false;
       }, error: (error) => {
         console.log(error);
         this.notificationService.showSnackBar("На жаль сталася помилка :(");

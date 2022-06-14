@@ -28,6 +28,10 @@
           <a routerLink="/register">Зареєструватися</a>
         </div>
 
+        <div  *ngIf="loading"  style="display: block; margin: 10px auto; width: fit-content;">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
       </div>
     </form>
   </div>
