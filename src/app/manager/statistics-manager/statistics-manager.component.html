@@ -58,7 +58,11 @@
         <ng-container matColumnDef="percentageOnTime">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Виконано вчасно </th>
           <td mat-cell *matCellDef="let row">
-            <progress-bar [progress]="row.percentageOnTime" [color]="'#488aff'">
+            <progress-bar *ngIf="row.percentageOnTime < 30" [progress]="row.percentageOnTime" [color]="'#FF6347'">
+            </progress-bar>
+            <progress-bar *ngIf="row.percentageOnTime < 70 && row.percentageOnTime >= 30" [progress]="row.percentageOnTime" [color]="'rgba(255, 149, 0, 0.6)'">
+            </progress-bar>
+            <progress-bar *ngIf="row.percentageOnTime >=70" [progress]="row.percentageOnTime" [color]="'rgba(0, 150, 67, 0.6)'">
             </progress-bar>
           </td>
         </ng-container>
