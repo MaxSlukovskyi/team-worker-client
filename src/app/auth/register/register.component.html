@@ -33,6 +33,9 @@
         <button [disabled]="regForm.invalid" (click)="submit()" mat-flat-button color="primary">
           Реєстрація
         </button>
+        <div  *ngIf="loading"  style="display: block; margin: 10px auto; width: fit-content;">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
       </div>
     </div>
   </form>

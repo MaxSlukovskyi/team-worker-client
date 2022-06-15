@@ -60,7 +60,6 @@ export class LoginComponent implements OnInit {
           for(var i = 0; i < this.tokenStorage.getUser().roles.length; i++) {
             if(this.tokenStorage.getUser().roles[i].name === 'ROLE_ADMIN'||this.tokenStorage.getUser().roles[i].name === 'ROLE_MANAGER') {
               this.tokenStorage.setRole(this.tokenStorage.getUser().roles[i]);
-              console.log(this.tokenStorage.getRole());
               location.reload();
               break;
             }

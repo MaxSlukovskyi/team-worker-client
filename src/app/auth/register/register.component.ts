@@ -13,6 +13,7 @@ import {Router} from "@angular/router";
 export class RegisterComponent implements OnInit {
 
   public regForm: FormGroup;
+  loading = false;
 
   constructor(
     private authService: AuthService,
@@ -46,9 +47,11 @@ export class RegisterComponent implements OnInit {
   }
 
   submit(): void {
+    this.loading = true;
     this.authService.registration( this.regForm.value).subscribe(() => {
       this.notificationService.showSnackBar('Успішна реєстрація!');
       this.router.navigate(['/login']);
+      this.loading = false;
     }, error => {
       console.log(error);
       if(error.status === 400) {
