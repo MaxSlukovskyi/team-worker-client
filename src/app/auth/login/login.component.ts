@@ -64,7 +64,6 @@ export class LoginComponent implements OnInit {
               break;
             }
             this.tokenStorage.setRole(this.tokenStorage.getUser().roles[i]);
-            console.log(this.tokenStorage.getRole());
             location.reload();
           }
         }

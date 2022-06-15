@@ -54,9 +54,11 @@ export class RegisterComponent implements OnInit {
     }, error => {
       console.log(error);
       if(error.status === 400) {
+        this.loading = true;
         this.notificationService.showSnackBar('Цей логін вже зайнятий, спробуйте інший');
       } else {
         this.notificationService.showSnackBar('Сталася помилка, спробуйте пізніше');
+        location.reload();
       }
     });
   }
