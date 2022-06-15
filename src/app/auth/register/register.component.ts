@@ -51,7 +51,6 @@ export class RegisterComponent implements OnInit {
     this.authService.registration( this.regForm.value).subscribe(() => {
       this.notificationService.showSnackBar('Успішна реєстрація!');
       this.router.navigate(['/login']);
-      this.loading = false;
     }, error => {
       console.log(error);
       if(error.status === 400) {
