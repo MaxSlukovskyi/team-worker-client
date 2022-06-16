@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
       if(error.status === 0) {
         this.notificationService.showSnackBar('Відстуній зв`язок з сервером, спробуйте пізніше');
       } else {
-        this.notificationService.showSnackBar(error.error.message);
+        this.notificationService.showSnackBar('Неправильний логін або пароль');
       }
       this.tokenStorage.logOut();
     });
